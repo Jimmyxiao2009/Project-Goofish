@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>闲鱼 for Windows 10 Mobile 原型</title>
+  <link rel="stylesheet" href="css/w10m-core.css">
+  <link rel="stylesheet" href="css/w10m-controls.css">
+  <style>
+    /* 强调色选择色块 */
+    .color-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .color-swatch {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .color-swatch:hover {
+      outline: 2px solid #FFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 设备外壳与控制栏 -->
+  <div class="device-wrapper">
+    <div class="device-controls-bar">
+      <button id="btn-toggle-fullscreen" class="device-btn" title="切换手机外壳/全屏展示">
+        <span class="mdl2">&#xE740;</span> 切换真机外壳 / 全屏
+      </button>
+    </div>
+
+    <!-- 经典 Lumia 950 风格机身容器 -->
+    <div class="lumia-frame">
+
+      <!-- 1. Windows 10 Mobile 顶部系统状态栏 -->
+      <div class="w10m-status-bar">
+        <div class="w10m-status-icons">
+          <span class="mdl2 w10m-status-icon">&#xE804;</span> <!-- 信号点 -->
+          <span style="font-weight: 600;">4G</span>
+          <span class="mdl2 w10m-status-icon">&#xE701;</span> <!-- WiFi -->
+        </div>
+        <div id="status-clock" style="font-weight: 600;">19:42</div>
+        <div class="w10m-status-icons">
+          <span class="mdl2 w10m-status-icon" style="transform: rotate(90deg);">&#xEA93;</span> <!-- 电池 -->
+          <span>86%</span>
+        </div>
+      </div>
+
+      <!-- 2. 应用视口 -->
+      <div class="w10m-viewport">
+
+        <!-- 顶部导航标题栏 -->
+        <header class="w10m-header">
+          <div class="w10m-header-left">
+            <button id="header-back-btn" class="w10m-nav-btn" style="display: none;" title="返回上一级">
+              <span class="mdl2">&#xE72B;</span>
+            </button>
+            <div id="header-title" class="w10m-app-title">闲鱼</div>
+            <span class="w10m-accent-badge">UWP</span>
+          </div>
+          <div style="display: flex; gap: 4px;">
+            <button class="w10m-nav-btn" onclick="window.navManager.navigateTo('page-search')" title="全局搜索">
+              <span class="mdl2">&#xE721;</span>
+            </button>
+          </div>
+        </header>
+
+        <!-- 页面栈容器 -->
+        <main class="w10m-page-container">
+
+          <!-- ================= PAGE 1: 首页 (Home Feed) ================= -->
+          <section id="page-home" class="w10m-page active">
+            <!-- Pivot 标签栏 -->
+            <div id="home-pivot" class="w10m-pivot-header">
+              <div class="w10m-pivot-item active" data-cat="all">推荐</div>
+              <div class="w10m-pivot-item" data-cat="digital">数码外设</div>
+              <div class="w10m-pivot-item" data-cat="game">潮玩二次元</div>
+            </div>
+
+            <!-- 双列瀑布流卡片网格 -->
+            <div id="home-grid" class="w10m-grid">
+              <!-- 动态加载商品卡片 -->
+            </div>
+          </section>
+
+          <!-- ================= PAGE 2: 搜索页 (Search) ================= -->
+          <section id="page-search" class="w10m-page">
+            <div class="w10m-search-bar">
+              <div class="w10m-input-box">
+                <span class="mdl2" style="color: var(--text-tertiary);">&#xE721;</span>
+                <input id="search-input" class="w10m-input-field" type="text" placeholder="搜索闲置宝贝或卖家..." />
+              </div>
+            </div>
+
+            <!-- 筛选小药丸标签 -->
+            <div id="search-filter-chips" class="w10m-filter-chips-row">
+              <div class="w10m-chip active" data-sort="default">综合排序</div>
+              <div class="w10m-chip" data-sort="price_asc">价格从低到高</div>
+              <div class="w10m-chip" data-sort="price_desc">价格从高到低</div>
+              <div class="w10m-chip" data-sort="time">最新发布</div>
+            </div>
+
+            <div id="search-results-grid" class="w10m-grid">
+              <div style="grid-column: span 2; text-align: center; padding: 40px; color: var(--text-tertiary);">
+                输入关键词并按回车搜索
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= PAGE 3: 商品详情页 (Item Detail) ================= -->
+          <section id="page-detail" class="w10m-page">
+            <div id="detail-content">
+              <!-- 动态注入商品详情 -->
+            </div>
+          </section>
+
+          <!-- ================= PAGE 4: 消息列表页 (Chat List) ================= -->
+          <section id="page-chat-list" class="w10m-page">
+            <div style="padding: 12px 16px; font-size: 20px; font-weight: var(--font-light); border-bottom: 1px solid var(--surface-border);">
+              近期联系人
+            </div>
+            <div id="chat-conversations-list">
+              <!-- 动态会话列表 -->
+            </div>
+          </section>
+
+          <!-- ================= PAGE 5: 专属私聊对话页 (Chat Dialogue) ================= -->
+          <section id="page-chat-dialog" class="w10m-page" style="overflow: hidden;">
+            <div class="w10m-chat-wrapper">
+              <!-- 顶部咨询商品条 -->
+              <div id="chat-item-banner" class="w10m-chat-item-banner">
+                <!-- 动态商品预览 -->
+              </div>
+
+              <!-- 消息气泡流 -->
+              <div id="chat-msg-container" class="w10m-chat-messages">
+                <!-- 动态气泡 -->
+              </div>
+
+              <!-- 底部输入栏 -->
+              <div class="w10m-chat-input-bar">
+                <div class="w10m-input-box" style="flex: 1; height: 38px;">
+                  <input id="chat-msg-input" class="w10m-input-field" type="text" placeholder="发送私信给卖家..." />
+                </div>
+                <button id="chat-send-btn" class="w10m-nav-btn" style="background: var(--accent-color); color: var(--accent-contrast); width: 38px; height: 38px;" title="发送">
+                  <span class="mdl2">&#xE724;</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= PAGE 6: 收藏夹 (Favorites) ================= -->
+          <section id="page-favorites" class="w10m-page">
+            <div style="padding: 12px 16px; font-size: 20px; font-weight: var(--font-light); border-bottom: 1px solid var(--surface-border);">
+              已收藏的宝贝
+            </div>
+            <div id="favorites-list">
+              <!-- 动态收藏列表 -->
+            </div>
+          </section>
+
+        </main>
+
+        <!-- 3. Windows 10 Mobile 底部 CommandBar (Application Bar) -->
+        <nav id="w10m-commandbar" class="w10m-commandbar">
+          <div class="w10m-commandbar-actions">
+            <button class="w10m-appbar-btn active" data-page="page-home" title="推荐首页">
+              <div class="w10m-appbar-icon-wrap"><span class="mdl2">&#xE80F;</span></div>
+              <span class="w10m-appbar-label">推荐</span>
+            </button>
+            <button class="w10m-appbar-btn" data-page="page-search" title="搜索商品">
+              <div class="w10m-appbar-icon-wrap"><span class="mdl2">&#xE721;</span></div>
+              <span class="w10m-appbar-label">搜索</span>
+            </button>
+            <button class="w10m-appbar-btn" data-page="page-chat-list" title="消息会话">
+              <div class="w10m-appbar-icon-wrap"><span class="mdl2">&#xE8BD;</span></div>
+              <span class="w10m-appbar-label">消息</span>
+            </button>
+            <button class="w10m-appbar-btn" data-page="page-favorites" title="我的收藏">
+              <div class="w10m-appbar-icon-wrap"><span class="mdl2">&#xE006;</span></div>
+              <span class="w10m-appbar-label">收藏</span>
+            </button>
+          </div>
+          <button id="appbar-more-btn" class="w10m-more-btn" title="更多设置">
+            <span class="mdl2">&#xE10C;</span>
+          </button>
+        </nav>
+
+        <!-- 底部 CommandBar 展开菜单 (Flyout) -->
+        <div id="w10m-flyout-menu" class="w10m-flyout-menu">
+          <div id="menu-toggle-theme" class="w10m-flyout-item">
+            <span class="mdl2">&#xE790;</span>
+            <span>切换深色 / 浅色模式</span>
+          </div>
+          <div id="menu-accent-color" class="w10m-flyout-item">
+            <span class="mdl2">&#xE771;</span>
+            <span>个性化强调色</span>
+          </div>
+          <div id="menu-about" class="w10m-flyout-item">
+            <span class="mdl2">&#xE946;</span>
+            <span>关于 Project Goofish UWP</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 对话框：强调色选择 -->
+  <div id="color-dialog" class="w10m-dialog-backdrop">
+    <div class="w10m-dialog">
+      <div class="w10m-dialog-title">选择 Windows 强调色</div>
+      <div class="w10m-dialog-body">
+        符合当年 Windows 10 Mobile / Windows Phone 调色板：
+        <div class="color-picker-grid">
+          <div class="color-swatch" style="background: #FFB900; color: #000;" data-color="#FFB900" data-contrast="#000">闲鱼金</div>
+          <div class="color-swatch" style="background: #0078D7; color: #FFF;" data-color="#0078D7" data-contrast="#FFF">Lumia蓝</div>
+          <div class="color-swatch" style="background: #FF8C00; color: #000;" data-color="#FF8C00" data-contrast="#000">暖阳橙</div>
+          <div class="color-swatch" style="background: #E3008C; color: #FFF;" data-color="#E3008C" data-contrast="#FFF">品红紫</div>
+          <div class="color-swatch" style="background: #107C10; color: #FFF;" data-color="#107C10" data-contrast="#FFF">青柠绿</div>
+          <div class="color-swatch" style="background: #008272; color: #FFF;" data-color="#008272" data-contrast="#FFF">经典湖绿</div>
+        </div>
+      </div>
+      <div class="w10m-dialog-actions">
+        <button id="color-dialog-close" class="w10m-btn">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 对话框：关于 -->
+  <div id="about-dialog" class="w10m-dialog-backdrop">
+    <div class="w10m-dialog">
+      <div class="w10m-dialog-title">Project Goofish UWP</div>
+      <div class="w10m-dialog-body">
+        <p><strong>版本：</strong>1.0.0-Preview (Build 10586)</p>
+        <p style="margin-top: 6px;">专为 Windows 10 Mobile 平台打造的非官方闲鱼客户端原型。</p>
+        <p style="margin-top: 6px;"><strong>技术特性：</strong></p>
+        <ul style="padding-left: 18px; margin-top: 4px;">
+          <li>MDL2 (Microsoft Design Language 2) 原生规范</li>
+          <li>经典 Pivot 横滑与 CommandBar 底栏</li>
+          <li>阿里 MTOP 网关 MD5 签名算法原生对接</li>
+          <li>免付款纯粹二手捡漏与即时通讯</li>
+        </ul>
+      </div>
+      <div class="w10m-dialog-actions">
+        <button id="about-dialog-close" class="w10m-btn primary">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/mockData.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

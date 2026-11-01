@@ -1,0 +1,158 @@
+<Page
+    x:Class="Goofish.Views.ChatPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="using:Goofish.Views"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <views:MessageTemplateSelector x:Key="MessageSelector"
+                                       Incoming="{StaticResource IncomingBubbleTemplate}"
+                                       Outgoing="{StaticResource OutgoingBubbleTemplate}"
+                                       System="{StaticResource SystemMessageTemplate}"
+                                       IncomingImage="{StaticResource IncomingImageTemplate}"
+                                       OutgoingImage="{StaticResource OutgoingImageTemplate}"
+                                       IncomingVideo="{StaticResource IncomingVideoTemplate}"
+                                       OutgoingVideo="{StaticResource OutgoingVideoTemplate}"
+                                       IncomingCard="{StaticResource IncomingCardTemplate}"
+                                       OutgoingCard="{StaticResource OutgoingCardTemplate}" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 对方：头像 + 昵称，点击进入 TA 的个人主页 -->
+        <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="4,4,4,0"
+                Background="Transparent" BorderThickness="0" Padding="8,4" Click="Peer_Click">
+            <StackPanel Orientation="Horizontal">
+                <Grid Width="32" Height="32">
+                    <Ellipse Fill="{Binding PeerColor, Converter={StaticResource ColorBrush}}" />
+                    <TextBlock Text="{Binding PeerInitial}" FontSize="14" Foreground="White"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Ellipse>
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="UniformToFill"
+                                        ImageSource="{Binding PeerAvatar, Converter={StaticResource ImageUrl}, ConverterParameter=32}" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </Grid>
+                <TextBlock Text="{Binding PeerNick}" FontSize="20" FontWeight="SemiLight" Margin="10,0,0,0"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                           Visibility="{Binding PeerNick, Converter={StaticResource VisibleWhen}}" />
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76C;" FontSize="12" Margin="8,0,0,0"
+                          VerticalAlignment="Center"
+                          Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+            </StackPanel>
+        </Button>
+
+        <!-- 正在咨询的宝贝 -->
+        <Button Grid.Row="1" Margin="12,0" Padding="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                Background="{ThemeResource CardBrush}" BorderThickness="0" Click="Item_Click"
+                Visibility="{Binding ItemTitle, Converter={StaticResource VisibleWhen}}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="44" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid Width="44" Height="44" Background="{Binding ItemColor, Converter={StaticResource ColorBrush}}">
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="{Binding ItemGlyph}" FontSize="20" Foreground="White" />
+                    <Image Source="{Binding ItemCover, Converter={StaticResource ImageUrl}, ConverterParameter=44}" Stretch="UniformToFill" />
+                </Grid>
+                <StackPanel Grid.Column="1" Margin="10,0,8,0" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding ItemTitle}" FontSize="13" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding ItemPrice}" Style="{StaticResource PriceTextStyle}" FontSize="15" />
+                </StackPanel>
+                <FontIcon Grid.Column="2" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE76C;" FontSize="12"
+                          Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+            </Grid>
+        </Button>
+
+        <ListView x:Name="MessageList" Grid.Row="2" Padding="0,8,0,0"
+                  ItemsSource="{Binding Messages}"
+                  ItemTemplateSelector="{StaticResource MessageSelector}"
+                  ItemContainerStyle="{StaticResource PlainItemStyle}"
+                  SelectionMode="None"
+                  IsItemClickEnabled="True"
+                  ItemClick="Message_Click">
+            <ListView.Header>
+                <TextBlock Text="你正在咨询这件宝贝。请勿脱离闲鱼私下转账，交易请认准闲鱼官方流程。"
+                           Style="{StaticResource MetaTextStyle}" TextWrapping="Wrap" TextAlignment="Center"
+                           Margin="24,4,24,14"
+                           Visibility="{Binding IsEmpty, Converter={StaticResource VisibleWhen}}" />
+            </ListView.Header>
+        </ListView>
+
+        <TextBlock Grid.Row="2" Text="{Binding Error}" Style="{StaticResource HintTextStyle}"
+                   VerticalAlignment="Bottom" HorizontalAlignment="Center" TextAlignment="Center" Margin="24,0,24,8"
+                   Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                   Visibility="{Binding Error, Converter={StaticResource VisibleWhen}}" />
+
+        <TextBox x:Name="DraftBox" Grid.Row="3" Margin="12,8"
+                 PlaceholderText="输入消息"
+                 Text="{Binding Draft, Mode=TwoWay}"
+                 TextWrapping="Wrap" MaxHeight="96"
+                 TextChanged="DraftBox_TextChanged"
+                 KeyDown="DraftBox_KeyDown"
+                 IsEnabled="{Binding IsReady}">
+            <TextBox.InputScope>
+                <InputScope>
+                    <InputScope.Names>
+                        <InputScopeName NameValue="Chat" />
+                    </InputScope.Names>
+                </InputScope>
+            </TextBox.InputScope>
+        </TextBox>
+
+        <!-- 图片 / 视频查看层：盖住整页，点关闭或按返回键退出 -->
+        <Grid x:Name="MediaOverlay" Grid.RowSpan="4" Background="#F0000000" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Margin="12,8">
+                <TextBlock x:Name="MediaTitle" Text="图片" FontSize="15" Foreground="White"
+                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,80,0" />
+                <Button Content="关闭" HorizontalAlignment="Right" Click="MediaClose_Click" />
+            </Grid>
+            <Image x:Name="PhotoView" Grid.Row="1" Margin="8,0,8,12" Stretch="Uniform"
+                   Visibility="Collapsed" Tapped="PhotoView_Tapped" />
+            <MediaElement x:Name="VideoView" Grid.Row="1" Margin="8,0,8,12"
+                          AreTransportControlsEnabled="True" AutoPlay="True"
+                          Visibility="Collapsed" />
+        </Grid>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="常用语">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8F2;" />
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="还在吗？" Click="QuickReply_Click" />
+                        <MenuFlyoutItem Text="可以小刀吗？" Click="QuickReply_Click" />
+                        <MenuFlyoutItem Text="包邮吗？" Click="QuickReply_Click" />
+                        <MenuFlyoutItem Text="成色怎么样，有没有划痕？" Click="QuickReply_Click" />
+                        <MenuFlyoutItem Text="可以走验货宝吗？" Click="QuickReply_Click" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton x:Name="SendButton" Icon="Send" Label="发送" Click="Send_Click"
+                          IsEnabled="{Binding CanSend}" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="查看宝贝" Click="Item_Click" />
+                <AppBarButton Label="在浏览器中查看会话" Click="OpenWeb_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

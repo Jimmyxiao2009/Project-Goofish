@@ -1,0 +1,82 @@
+<Page
+    x:Class="Goofish.Views.UserProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="闲鱼" Style="{StaticResource PageHeaderTextStyle}" />
+                <TextBlock Text="个人主页" Style="{StaticResource PageTitleTextStyle}" />
+
+                <StackPanel Margin="12,0" Visibility="{Binding HasProfile, Converter={StaticResource VisibleWhen}}">
+                    <!-- 头像 + 昵称 + 认证 / 信用 -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="72" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Width="72" Height="72">
+                            <Ellipse Fill="{Binding Profile.AvatarColor, Converter={StaticResource ColorBrush}}" />
+                            <TextBlock Text="{Binding Profile.Initial}" FontSize="28" FontWeight="SemiLight" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Ellipse>
+                                <Ellipse.Fill>
+                                    <ImageBrush Stretch="UniformToFill"
+                                                ImageSource="{Binding Profile.AvatarUrl, Converter={StaticResource ImageUrl}, ConverterParameter=72}" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Profile.DisplayName}" FontSize="24" FontWeight="SemiLight"
+                                       TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding Profile.VerifiedText}" Style="{StaticResource MetaTextStyle}" FontSize="13"
+                                       Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                                       Visibility="{Binding Profile.VerifiedText, Converter={StaticResource VisibleWhen}}" />
+                            <TextBlock Text="{Binding Profile.CreditLine}" Style="{StaticResource MetaTextStyle}" FontSize="13"
+                                       Visibility="{Binding Profile.CreditLine, Converter={StaticResource VisibleWhen}}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="{Binding Profile.Signature}" FontSize="15" LineHeight="24" TextWrapping="Wrap"
+                               Margin="0,14,0,0" IsTextSelectionEnabled="True"
+                               Foreground="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                               Visibility="{Binding Profile.Signature, Converter={StaticResource VisibleWhen}}" />
+
+                    <TextBlock Text="{Binding Profile.StatsText}" FontSize="15" Margin="0,14,0,0"
+                               Visibility="{Binding Profile.StatsText, Converter={StaticResource VisibleWhen}}" />
+                    <TextBlock Text="{Binding Profile.ActivityLine}" Style="{StaticResource MetaTextStyle}" FontSize="13" Margin="0,4,0,0"
+                               Visibility="{Binding Profile.ActivityLine, Converter={StaticResource VisibleWhen}}" />
+
+                    <Button Content="和 TA 聊聊" Margin="0,16,0,0" HorizontalAlignment="Left" Click="Chat_Click" />
+                </StackPanel>
+
+                <TextBlock Text="{Binding Error}" Style="{StaticResource HintTextStyle}" Margin="12,12,12,0"
+                           Visibility="{Binding Error, Converter={StaticResource VisibleWhen}}" />
+
+                <TextBlock Text="TA 的在售" Style="{StaticResource SectionLabelTextStyle}"
+                           Visibility="{Binding HasProfile, Converter={StaticResource VisibleWhen}}" />
+                <TextBlock Text="按昵称搜索得到，未必全是 TA 的宝贝。" Style="{StaticResource MetaTextStyle}" FontSize="12"
+                           Margin="12,0,12,4"
+                           Visibility="{Binding HasProfile, Converter={StaticResource VisibleWhen}}" />
+
+                <ListView ItemsSource="{Binding Items}"
+                          ItemTemplate="{StaticResource ItemRowTemplate}"
+                          ItemContainerStyle="{StaticResource RowItemStyle}"
+                          SelectionMode="None" IsItemClickEnabled="True" ItemClick="Item_Click"
+                          Padding="0,0,0,12"
+                          Visibility="{Binding HasProfile, Converter={StaticResource VisibleWhen}}" />
+
+                <TextBlock Text="{Binding ItemsMessage}" Style="{StaticResource EmptyTextStyle}" Margin="24,12"
+                           Visibility="{Binding ItemsMessage, Converter={StaticResource VisibleWhen}}" />
+
+                <ProgressRing Width="40" Height="40" IsActive="{Binding IsLoading}" HorizontalAlignment="Center" Margin="0,24"
+                              Visibility="{Binding IsLoading, Converter={StaticResource VisibleWhen}}" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

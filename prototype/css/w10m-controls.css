@@ -1,0 +1,803 @@
+/* ==========================================================================
+   Windows 10 Mobile (MDL2) Controls & UI Components
+   Project Goofish - Third-party Xianyu UWP Client
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   App Header & Navigation Bar
+   -------------------------------------------------------------------------- */
+.w10m-header {
+  height: var(--header-height);
+  background: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--surface-border);
+  position: relative;
+  z-index: 50;
+  flex-shrink: 0;
+}
+
+.w10m-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.w10m-nav-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.w10m-nav-btn:hover {
+  background: var(--list-item-hover);
+}
+
+.w10m-nav-btn:active {
+  background: var(--list-item-pressed);
+}
+
+.w10m-app-title {
+  font-size: 16px;
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.w10m-accent-badge {
+  background: var(--accent-color);
+  color: var(--accent-contrast);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --------------------------------------------------------------------------
+   Pivot Control (Windows 10 Mobile Signature Navigation)
+   -------------------------------------------------------------------------- */
+.w10m-pivot-header {
+  height: var(--pivot-header-height);
+  background: var(--bg-color);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.w10m-pivot-header::-webkit-scrollbar {
+  display: none;
+}
+
+.w10m-pivot-item {
+  font-size: 20px;
+  font-weight: var(--font-light);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  padding: 6px 0;
+  transition: all 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.w10m-pivot-item:hover {
+  color: var(--text-secondary);
+}
+
+.w10m-pivot-item.active {
+  color: var(--text-primary);
+  font-weight: var(--font-semibold);
+}
+
+.w10m-pivot-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: var(--accent-color);
+}
+
+/* --------------------------------------------------------------------------
+   Bottom CommandBar (Application Bar)
+   -------------------------------------------------------------------------- */
+.w10m-commandbar {
+  height: var(--command-bar-height);
+  background: var(--command-bar-bg);
+  border-top: 1px solid var(--command-bar-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  position: relative;
+  z-index: 90;
+  flex-shrink: 0;
+}
+
+.w10m-commandbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.w10m-appbar-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 4px 8px;
+  min-width: 48px;
+  height: 44px;
+  transition: all 0.15s;
+}
+
+.w10m-appbar-icon-wrap {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.w10m-appbar-label {
+  font-size: 9px;
+  color: var(--text-secondary);
+  font-weight: var(--font-normal);
+  letter-spacing: 0.2px;
+}
+
+.w10m-appbar-btn.active .w10m-appbar-icon-wrap {
+  background: var(--accent-color);
+  color: var(--accent-contrast);
+}
+
+.w10m-appbar-btn.active .w10m-appbar-label {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.w10m-appbar-btn:hover .w10m-appbar-icon-wrap {
+  outline: 1px solid var(--text-secondary);
+}
+
+.w10m-appbar-btn:active .w10m-appbar-icon-wrap {
+  background: var(--list-item-pressed);
+}
+
+.w10m-more-btn {
+  width: 40px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.w10m-more-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Secondary Flyout Menu (Expands from bottom) */
+.w10m-flyout-menu {
+  position: absolute;
+  bottom: var(--command-bar-height);
+  left: 0;
+  right: 0;
+  background: var(--surface-color);
+  border-top: 1px solid var(--surface-border);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.6);
+  display: none;
+  flex-direction: column;
+  padding: 8px 0;
+  z-index: 89;
+  animation: w10mFlyoutUp 0.2s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.w10m-flyout-menu.open {
+  display: flex;
+}
+
+@keyframes w10mFlyoutUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.w10m-flyout-item {
+  padding: 12px 18px;
+  font-size: 14px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.w10m-flyout-item:hover {
+  background: var(--list-item-hover);
+}
+
+.w10m-flyout-item:active {
+  background: var(--list-item-pressed);
+}
+
+/* --------------------------------------------------------------------------
+   Product Grid (2-Column Windows Mobile Metro Tile Grid)
+   -------------------------------------------------------------------------- */
+.w10m-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 10px;
+}
+
+.w10m-tile-card {
+  background: var(--surface-color);
+  border: 1px solid var(--surface-border);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+  overflow: hidden;
+  position: relative;
+}
+
+.w10m-tile-card:hover {
+  border-color: var(--text-secondary);
+  transform: translateY(-2px);
+}
+
+.w10m-tile-card:active {
+  transform: scale(0.97);
+}
+
+.w10m-tile-thumb-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #111;
+  overflow: hidden;
+  position: relative;
+}
+
+.w10m-tile-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.w10m-tile-tag {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #FFF;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  backdrop-filter: blur(4px);
+}
+
+.w10m-tile-content {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.w10m-tile-title {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--text-primary);
+  font-weight: var(--font-normal);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.w10m-tile-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.w10m-tile-price {
+  color: var(--accent-color);
+  font-size: 16px;
+  font-weight: var(--font-bold);
+}
+
+.w10m-tile-price .currency {
+  font-size: 11px;
+  margin-right: 1px;
+}
+
+.w10m-tile-original-price {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-decoration: line-through;
+}
+
+.w10m-tile-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--surface-border);
+  padding-top: 6px;
+}
+
+.w10m-tile-seller {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 65%;
+}
+
+.w10m-avatar-small {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.w10m-tile-city {
+  color: var(--text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   Search & AutoSuggestBox
+   -------------------------------------------------------------------------- */
+.w10m-search-bar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--bg-color);
+  gap: 8px;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.w10m-input-box {
+  flex: 1;
+  height: 38px;
+  background: var(--input-bg);
+  border: 2px solid var(--input-border);
+  color: var(--text-primary);
+  padding: 0 12px;
+  font-size: 14px;
+  font-family: var(--font-family);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.2s;
+}
+
+.w10m-input-box:focus-within {
+  border-color: var(--accent-color);
+}
+
+.w10m-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.w10m-input-field::placeholder {
+  color: var(--text-tertiary);
+}
+
+.w10m-filter-chips-row {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-color);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.w10m-chip {
+  padding: 4px 10px;
+  background: var(--surface-color);
+  border: 1px solid var(--surface-border);
+  color: var(--text-secondary);
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.w10m-chip.active {
+  background: var(--accent-color);
+  color: var(--accent-contrast);
+  border-color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   Product Detail Page
+   -------------------------------------------------------------------------- */
+.w10m-detail-container {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.w10m-gallery-slider {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.w10m-gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.w10m-gallery-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #FFF;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.w10m-detail-info {
+  padding: 16px;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.w10m-detail-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.w10m-detail-price {
+  font-size: 26px;
+  font-weight: var(--font-bold);
+  color: var(--accent-color);
+}
+
+.w10m-detail-stats {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  gap: 12px;
+}
+
+.w10m-detail-title {
+  font-size: 16px;
+  font-weight: var(--font-semibold);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.w10m-detail-desc {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  margin-bottom: 16px;
+}
+
+/* Seller Profile Card (Tile Style) */
+.w10m-seller-card {
+  margin: 12px;
+  padding: 12px;
+  background: var(--surface-color);
+  border: 1px solid var(--surface-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.w10m-seller-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.w10m-seller-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--surface-border);
+}
+
+.w10m-seller-nick {
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  margin-bottom: 4px;
+}
+
+.w10m-seller-tags {
+  display: flex;
+  gap: 6px;
+}
+
+.w10m-credit-tag {
+  background: #008272;
+  color: #FFF;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   IM Chat Page (Windows 10 Messaging Style)
+   -------------------------------------------------------------------------- */
+.w10m-chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.w10m-chat-item-banner {
+  background: var(--surface-alt);
+  border-bottom: 1px solid var(--surface-border);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.w10m-chat-item-thumb {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.w10m-chat-item-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.w10m-chat-item-title {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+.w10m-chat-item-price {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+.w10m-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.w10m-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  font-size: 13.5px;
+  line-height: 1.4;
+  position: relative;
+  word-break: break-word;
+}
+
+.w10m-bubble.incoming {
+  align-self: flex-start;
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  border: 1px solid var(--surface-border);
+}
+
+.w10m-bubble.outgoing {
+  align-self: flex-end;
+  background: var(--accent-color);
+  color: var(--accent-contrast);
+  font-weight: 500;
+}
+
+.w10m-bubble-time {
+  font-size: 9px;
+  opacity: 0.65;
+  margin-top: 4px;
+  text-align: right;
+}
+
+.w10m-chat-input-bar {
+  padding: 8px;
+  background: var(--command-bar-bg);
+  border-top: 1px solid var(--command-bar-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Favorites & Conversation List Items
+   -------------------------------------------------------------------------- */
+.w10m-list-row {
+  display: flex;
+  padding: 12px;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--surface-border);
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.w10m-list-row:hover {
+  background: var(--list-item-hover);
+}
+
+.w10m-list-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.w10m-list-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.w10m-list-title {
+  font-size: 13.5px;
+  font-weight: var(--font-normal);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+.w10m-list-sub {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* --------------------------------------------------------------------------
+   Settings Modal / Content Dialog
+   -------------------------------------------------------------------------- */
+.w10m-dialog-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.w10m-dialog-backdrop.open {
+  display: flex;
+}
+
+.w10m-dialog {
+  background: var(--surface-color);
+  border: 2px solid var(--surface-border);
+  width: 100%;
+  max-width: 340px;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+  animation: w10mPopIn 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+@keyframes w10mPopIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.w10m-dialog-title {
+  font-size: 18px;
+  font-weight: var(--font-semibold);
+  margin-bottom: 12px;
+}
+
+.w10m-dialog-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.w10m-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.w10m-btn {
+  padding: 8px 16px;
+  background: var(--surface-alt);
+  color: var(--text-primary);
+  border: 1px solid var(--surface-border);
+  font-family: var(--font-family);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.w10m-btn:hover {
+  border-color: var(--text-secondary);
+}
+
+.w10m-btn.primary {
+  background: var(--accent-color);
+  color: var(--accent-contrast);
+  border-color: var(--accent-color);
+  font-weight: 600;
+}

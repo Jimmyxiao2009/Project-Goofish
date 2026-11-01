@@ -1,0 +1,7 @@
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/metadata">
+  <Application>
+    <Assembly Name="*Application*" Dynamic="Required All" />
+    <!-- Newtonsoft.Json 在 .NET Native 下依赖反射序列化 -->
+    <Assembly Name="Newtonsoft.Json" Dynamic="Required All" Serialize="Required All" />
+  </Application>
+</Directives>

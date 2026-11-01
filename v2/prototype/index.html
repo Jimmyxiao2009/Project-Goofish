@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>闲鱼 for Windows 10 Mobile · 原型 v2</title>
+  <link rel="stylesheet" href="css/metro.css">
+</head>
+<body>
+
+  <div class="device">
+    <div id="screen" class="screen theme-dark">
+
+      <!-- 系统托盘：应用通过 StatusBar.ProgressIndicator 在这里显示加载状态 -->
+      <div id="tray" class="tray">
+        <div class="tray-left">
+          <span class="mdl2">&#xE870;</span>
+          <span style="font-weight:600">4G</span>
+          <span class="mdl2">&#xE701;</span>
+        </div>
+        <div class="tray-right">
+          <span class="mdl2">&#xEBB5;</span>
+          <span id="clock">20:16</span>
+        </div>
+        <div class="tray-progress">
+          <span id="tray-text" class="tray-progress-text">正在加载...</span>
+          <div class="dots"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+
+      <div class="app">
+        <div id="pages" class="pages">
+          <section class="page" data-page="main"></section>
+          <section class="page" data-page="search"></section>
+          <section class="page" data-page="detail"></section>
+          <section class="page" data-page="chat"></section>
+          <section class="page" data-page="login"></section>
+          <section class="page" data-page="settings"></section>
+        </div>
+
+        <div id="appbar-scrim" class="appbar-scrim"></div>
+        <div id="appbar" class="appbar">
+          <div id="appbar-secondary" class="appbar-secondary"></div>
+          <div class="appbar-row">
+            <div id="appbar-primary" style="display:flex"></div>
+            <button id="appbar-more" class="appbar-more" title="更多">&bull;&bull;&bull;</button>
+          </div>
+        </div>
+
+        <!-- 浮层：Picker / ContentDialog / MenuFlyout / Toast -->
+        <div id="picker" class="picker"></div>
+        <div id="dialog" class="dialog-backdrop"><div class="dialog"></div></div>
+        <div id="menu-scrim" class="menu-scrim"></div>
+        <div id="menu" class="menu"></div>
+        <div id="toast" class="toast">
+          <div class="toast-icon mdl2">&#xE8BD;</div>
+          <div>
+            <div id="toast-title" class="toast-title"></div>
+            <div id="toast-body" class="toast-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lumia 950 软导航键 -->
+      <div class="navbar">
+        <button id="nav-back" class="mdl2" title="返回">&#xE72B;</button>
+        <button title="开始"><span class="winlogo"><i></i><i></i><i></i><i></i></span></button>
+        <button id="nav-search" class="mdl2" title="搜索">&#xE721;</button>
+      </div>
+    </div>
+    <div class="device-brand">Microsoft</div>
+  </div>
+
+  <!-- 审阅面板：只服务于原型评审，不属于应用本身 -->
+  <aside class="review">
+    <h1>闲鱼 UWP · v2</h1>
+    <p>Windows 10 Mobile 设计规范原型。点击或拖动交互，底部“返回”软键对应硬件返回键。</p>
+
+    <h2>跳转到屏幕</h2>
+    <div class="jump">
+      <button data-jump="main:0">推荐</button>
+      <button data-jump="main:1">消息</button>
+      <button data-jump="main:2">收藏</button>
+      <button data-jump="search">搜索</button>
+      <button data-jump="detail">商品详情</button>
+      <button data-jump="chat">私信</button>
+      <button data-jump="login">登录</button>
+      <button data-jump="settings">设置</button>
+    </div>
+
+    <h2>系统主题（模拟“设置 → 个性化”）</h2>
+    <div class="seg" id="review-theme">
+      <button data-theme="dark" class="on">深色</button>
+      <button data-theme="light">浅色</button>
+    </div>
+
+    <h2>系统强调色</h2>
+    <div id="review-accent" class="swatches"></div>
+
+    <h2>显示</h2>
+    <label><input type="checkbox" id="review-frame" checked> Lumia 950 外壳</label>
+  </aside>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

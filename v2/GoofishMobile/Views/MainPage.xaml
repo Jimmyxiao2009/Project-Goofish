@@ -1,0 +1,143 @@
+<Page
+    x:Class="Goofish.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <!-- W10M 首页：Pivot 标题 + 可横滑的分区，选中项始终排在最左 -->
+        <Pivot x:Name="RootPivot" Title="闲鱼" SelectionChanged="RootPivot_SelectionChanged">
+
+            <!-- ================= 推荐 ================= -->
+            <PivotItem Header="推荐" Margin="0">
+                <Grid>
+                    <GridView x:Name="FeedGrid"
+                              ItemsSource="{Binding Feed}"
+                              ItemTemplate="{StaticResource ItemTileTemplate}"
+                              ItemContainerStyle="{StaticResource TileItemStyle}"
+                              SelectionMode="None"
+                              IsItemClickEnabled="True"
+                              ItemClick="Item_Click"
+                              Padding="8,4,8,0"
+                              IncrementalLoadingTrigger="Edge"
+                              DataFetchSize="2"
+                              SizeChanged="FeedGrid_SizeChanged">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal" Loaded="FeedPanel_Loaded" />
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.Header>
+                            <Border Margin="4,0,4,12" Padding="12,8" Background="{ThemeResource CardBrush}"
+                                    Visibility="{Binding IsDemo, Converter={StaticResource VisibleWhen}}">
+                                <TextBlock TextWrapping="Wrap" FontSize="14">
+                                    <Run Text="正在浏览演示数据。" />
+                                    <Run Text="登录" Foreground="{ThemeResource SystemControlForegroundAccentBrush}" />
+                                    <Run Text="后显示你的闲鱼推荐。" />
+                                </TextBlock>
+                            </Border>
+                        </GridView.Header>
+                        <GridView.Footer>
+                            <TextBlock Text="{Binding FeedFooter}" Style="{StaticResource MetaTextStyle}" FontSize="13"
+                                       HorizontalAlignment="Center" Margin="0,8,0,24" TextWrapping="Wrap"
+                                       Visibility="{Binding FeedFooter, Converter={StaticResource VisibleWhen}}" />
+                        </GridView.Footer>
+                    </GridView>
+
+                    <StackPanel VerticalAlignment="Center" Margin="24,0"
+                                Visibility="{Binding FeedMessage, Converter={StaticResource VisibleWhen}}">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7B8;" FontSize="40"
+                                  Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,0,16" />
+                        <TextBlock Text="{Binding FeedMessage}" Style="{StaticResource EmptyTextStyle}" />
+                        <Button Content="重试" HorizontalAlignment="Center" MinWidth="96" Margin="0,20,0,0" Click="Refresh_Click" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+
+            <!-- ================= 消息 ================= -->
+            <PivotItem Margin="0" AutomationProperties.Name="消息">
+                <PivotItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="消息" />
+                        <TextBlock Text="{Binding UnreadText}" FontSize="12" Margin="4,2,0,0" VerticalAlignment="Top"
+                                   Foreground="{ThemeResource SystemControlForegroundAccentBrush}" />
+                    </StackPanel>
+                </PivotItem.Header>
+                <Grid>
+                    <ListView x:Name="ConversationList"
+                              ItemsSource="{Binding Conversations}"
+                              ItemTemplate="{StaticResource ConversationTemplate}"
+                              ItemContainerStyle="{StaticResource RowItemStyle}"
+                              SelectionMode="None"
+                              IsItemClickEnabled="True"
+                              ItemClick="Conversation_Click" />
+                    <StackPanel VerticalAlignment="Center" Margin="24,0"
+                                Visibility="{Binding ConversationsMessage, Converter={StaticResource VisibleWhen}}">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8BD;" FontSize="40"
+                                  Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,0,16" />
+                        <TextBlock Text="{Binding ConversationsMessage}" Style="{StaticResource EmptyTextStyle}" />
+                        <Button Content="登录" HorizontalAlignment="Center" MinWidth="96" Margin="0,20,0,0"
+                                Style="{StaticResource AccentButtonStyleCompat}"
+                                Visibility="{Binding NeedsLogin, Converter={StaticResource VisibleWhen}}"
+                                Click="SignIn_Click" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+
+            <!-- ================= 收藏 ================= -->
+            <PivotItem Header="收藏" Margin="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!-- 手机上 ComboBox 会以全屏选择器的形式打开 -->
+                    <ComboBox x:Name="FavoriteFilterBox" Margin="12,4,12,8" HorizontalAlignment="Stretch"
+                              ItemsSource="{Binding FavoriteFilters}"
+                              SelectedIndex="{Binding FavoriteFilterIndex, Mode=TwoWay}"
+                              PlaceholderText="筛选收藏" />
+                    <ListView x:Name="FavoriteList" Grid.Row="1"
+                              ItemsSource="{Binding Favorites}"
+                              ItemTemplate="{StaticResource ItemRowTemplate}"
+                              ItemContainerStyle="{StaticResource RowItemStyle}"
+                              SelectionMode="None"
+                              IsItemClickEnabled="True"
+                              ItemClick="Item_Click"
+                              RightTapped="FavoriteList_RightTapped">
+                        <ListView.Footer>
+                            <TextBlock Text="长按宝贝可以取消收藏或联系卖家" Style="{StaticResource MetaTextStyle}" FontSize="13"
+                                       HorizontalAlignment="Center" Margin="0,8,0,24" />
+                        </ListView.Footer>
+                    </ListView>
+                    <StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="24,0"
+                                Visibility="{Binding FavoritesMessage, Converter={StaticResource VisibleWhen}}">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE734;" FontSize="40"
+                                  Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,0,16" />
+                        <TextBlock Text="{Binding FavoritesMessage}" Style="{StaticResource EmptyTextStyle}" />
+                        <Button Content="登录" HorizontalAlignment="Center" MinWidth="96" Margin="0,20,0,0"
+                                Style="{StaticResource AccentButtonStyleCompat}"
+                                Visibility="{Binding NeedsLogin, Converter={StaticResource VisibleWhen}}"
+                                Click="SignIn_Click" />
+                    </StackPanel>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+    </Grid>
+
+    <Page.BottomAppBar>
+        <CommandBar x:Name="AppBar">
+            <AppBarButton Icon="Find" Label="搜索" Click="Search_Click" />
+            <AppBarButton Icon="Refresh" Label="刷新" Click="Refresh_Click" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="订单" Click="Orders_Click" />
+                <AppBarButton Label="设置" Click="Settings_Click" />
+                <AppBarButton x:Name="AccountButton" Label="登录" Click="Account_Click" />
+                <AppBarButton Label="关于" Click="About_Click" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+</Page>

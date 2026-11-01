@@ -1,0 +1,416 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="using:Goofish.Common">
+
+    <!--
+      Windows 10 Mobile 规范：
+      · 强调色一律使用系统强调色（SystemControl*Accent*），不自定义品牌色
+      · 文字层级用 BaseHigh / BaseMedium，分隔线用 BaseLow
+      · 边距 12px，列表项靠 ListViewItem 自带的按压倾斜动画反馈
+    -->
+
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="BubbleInBrush" Color="#FF333333" />
+            <SolidColorBrush x:Key="CardBrush" Color="#FF2B2B2B" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="BubbleInBrush" Color="#FFE6E6E6" />
+            <SolidColorBrush x:Key="CardBrush" Color="#FFF2F2F2" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <common:VisibleWhenConverter x:Key="VisibleWhen" />
+    <common:ImageUrlConverter x:Key="ImageUrl" />
+    <common:ColorBrushConverter x:Key="ColorBrush" />
+    <common:LayoutMetrics x:Key="Layout" />
+
+    <!-- ========== 文字 ========== -->
+
+    <!-- 子页面顶部的小标题（W10M 设置、商店等应用的写法） -->
+    <Style x:Key="PageHeaderTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin" Value="12,10,12,6" />
+        <Setter Property="TextLineBounds" Value="Full" />
+    </Style>
+
+    <Style x:Key="PageTitleTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="Margin" Value="12,0,12,12" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="SectionTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="SemiLight" />
+        <Setter Property="Margin" Value="0,22,0,8" />
+    </Style>
+
+    <Style x:Key="SectionLabelTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundAccentBrush}" />
+        <Setter Property="Margin" Value="12,18,12,6" />
+    </Style>
+
+    <Style x:Key="HintTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+        <Setter Property="Margin" Value="0,0,0,10" />
+    </Style>
+
+    <Style x:Key="RowTitleTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="LineHeight" Value="20" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="MaxLines" Value="2" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="PriceTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundAccentBrush}" />
+    </Style>
+
+    <Style x:Key="MetaTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style x:Key="EmptyTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+    </Style>
+
+    <Style x:Key="TagBorderStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundAccentBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="4,0" />
+        <Setter Property="Margin" Value="0,0,6,0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="TagTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="LineHeight" Value="16" />
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundAccentBrush}" />
+    </Style>
+
+    <!-- 15063 之前没有内置 AccentButtonStyle；只换底色，按下等状态沿用系统模板 -->
+    <Style x:Key="AccentButtonStyleCompat" TargetType="Button">
+        <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundAccentBrush}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+
+    <!-- ========== 列表容器 ========== -->
+
+    <Style x:Key="RowItemStyle" TargetType="ListViewItem">
+        <Setter Property="Padding" Value="12,8" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Key="PlainItemStyle" TargetType="ListViewItem">
+        <Setter Property="Padding" Value="12,0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Key="TileItemStyle" TargetType="GridViewItem">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+    </Style>
+
+    <!-- ========== 共用模板 ========== -->
+
+    <!-- 宝贝缩略图：演示数据显示色块 + 图标，真实数据叠加网络图片 -->
+    <DataTemplate x:Key="ItemRowTemplate">
+        <Grid Opacity="{Binding DimOpacity}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="88" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Width="88" Height="88" VerticalAlignment="Top"
+                  Background="{Binding PlaceholderColor, Converter={StaticResource ColorBrush}}">
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="{Binding PlaceholderGlyph}"
+                          FontSize="32" Foreground="White" />
+                <Image Source="{Binding CoverUrl, Converter={StaticResource ImageUrl}, ConverterParameter=88}"
+                       Stretch="UniformToFill" />
+            </Grid>
+            <Grid Grid.Column="1" Margin="12,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding Title}" Style="{StaticResource RowTitleTextStyle}" />
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,4,0,0">
+                    <TextBlock Text="{Binding PriceText}" Style="{StaticResource PriceTextStyle}" />
+                    <Grid Margin="6,0,0,0" VerticalAlignment="Center"
+                          Visibility="{Binding OriginalPriceText, Converter={StaticResource VisibleWhen}}">
+                        <TextBlock Text="{Binding OriginalPriceText}" Style="{StaticResource MetaTextStyle}" />
+                        <!-- 15063 之前 TextBlock 没有删除线，用一条细线代替 -->
+                        <Rectangle Height="1" VerticalAlignment="Center" Margin="0,1,0,0"
+                                   Fill="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <Border Style="{StaticResource TagBorderStyle}" Visibility="{Binding ShippingBadge, Converter={StaticResource VisibleWhen}}">
+                        <TextBlock Text="{Binding ShippingBadge}" Style="{StaticResource TagTextStyle}" />
+                    </Border>
+                    <Border Style="{StaticResource TagBorderStyle}" Visibility="{Binding ReducedText, Converter={StaticResource VisibleWhen}}">
+                        <TextBlock Text="{Binding ReducedText}" Style="{StaticResource TagTextStyle}" />
+                    </Border>
+                    <Border Style="{StaticResource TagBorderStyle}" Visibility="{Binding InvalidText, Converter={StaticResource VisibleWhen}}">
+                        <TextBlock Text="{Binding InvalidText}" Style="{StaticResource TagTextStyle}" />
+                    </Border>
+                    <TextBlock Text="{Binding RowMeta}" Style="{StaticResource MetaTextStyle}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <!-- 推荐页方块 -->
+    <DataTemplate x:Key="ItemTileTemplate">
+        <StackPanel Margin="4,0,4,12">
+            <Grid Height="{Binding TileSize, Source={StaticResource Layout}}"
+                  Background="{Binding PlaceholderColor, Converter={StaticResource ColorBrush}}">
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="{Binding PlaceholderGlyph}"
+                          FontSize="56" Foreground="White" />
+                <Image Source="{Binding CoverUrl, Converter={StaticResource ImageUrl}, ConverterParameter=180}"
+                       Stretch="UniformToFill" />
+                <Border HorizontalAlignment="Left" VerticalAlignment="Bottom" Padding="6,2"
+                        Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+                        Visibility="{Binding ShippingBadge, Converter={StaticResource VisibleWhen}}">
+                    <TextBlock Text="{Binding ShippingBadge}" FontSize="11" Foreground="White" />
+                </Border>
+            </Grid>
+            <TextBlock Text="{Binding Title}" Margin="0,6,0,0" FontSize="14" LineHeight="19" Height="38"
+                       TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" />
+            <TextBlock Text="{Binding PriceText}" Style="{StaticResource PriceTextStyle}" Margin="0,2,0,0" />
+            <TextBlock Text="{Binding TileMeta}" Style="{StaticResource MetaTextStyle}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- 会话列表（W10M 消息应用样式：未读会话用强调色） -->
+    <DataTemplate x:Key="ConversationTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Width="48" Height="48" VerticalAlignment="Top">
+                <Ellipse Fill="{Binding PeerColor, Converter={StaticResource ColorBrush}}" />
+                <TextBlock Text="{Binding Initial}" FontSize="20" FontWeight="SemiLight" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Ellipse>
+                    <Ellipse.Fill>
+                        <ImageBrush Stretch="UniformToFill"
+                                    ImageSource="{Binding PeerAvatar, Converter={StaticResource ImageUrl}, ConverterParameter=48}" />
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Grid>
+            <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <TextBlock Text="{Binding DisplayName}" FontSize="17" TextTrimming="CharacterEllipsis"
+                                   Visibility="{Binding IsUnread, Converter={StaticResource VisibleWhen}, ConverterParameter=Invert}" />
+                        <TextBlock Text="{Binding DisplayName}" FontSize="17" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                   Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                                   Visibility="{Binding IsUnread, Converter={StaticResource VisibleWhen}}" />
+                    </Grid>
+                    <TextBlock Grid.Column="1" Text="{Binding TimeText}" Style="{StaticResource MetaTextStyle}" Margin="8,4,0,0" />
+                </Grid>
+                <Grid>
+                    <TextBlock Text="{Binding LastMessage}" FontSize="14" TextTrimming="CharacterEllipsis"
+                               Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                               Visibility="{Binding IsUnread, Converter={StaticResource VisibleWhen}, ConverterParameter=Invert}" />
+                    <TextBlock Text="{Binding LastMessage}" FontSize="14" TextTrimming="CharacterEllipsis"
+                               Foreground="{ThemeResource SystemControlForegroundAccentBrush}"
+                               Visibility="{Binding IsUnread, Converter={StaticResource VisibleWhen}}" />
+                </Grid>
+                <TextBlock Text="{Binding ItemTitle}" FontSize="12" TextTrimming="CharacterEllipsis"
+                           Foreground="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                           Visibility="{Binding ItemTitle, Converter={StaticResource VisibleWhen}}" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <!-- 订单列表项 -->
+    <DataTemplate x:Key="OrderRowTemplate">
+        <Grid Margin="12,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid Width="64" Height="64" Background="{Binding PlaceholderColor, Converter={StaticResource ColorBrush}}">
+                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="{Binding PlaceholderGlyph}" FontSize="26" Foreground="White" />
+                <Image Source="{Binding CoverUrl, Converter={StaticResource ImageUrl}, ConverterParameter=64}" Stretch="UniformToFill" />
+            </Grid>
+            <StackPanel Grid.Column="1" Margin="10,0,8,0" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Title}" Style="{StaticResource RowTitleTextStyle}" MaxLines="2" />
+                <TextBlock Text="{Binding StatusText}" Style="{StaticResource MetaTextStyle}"
+                           Foreground="{ThemeResource SystemControlForegroundAccentBrush}" Margin="0,3,0,0" />
+                <TextBlock Text="{Binding PeerLine}" Style="{StaticResource MetaTextStyle}" Margin="0,3,0,0" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                <TextBlock Text="{Binding PriceText}" Style="{StaticResource PriceTextStyle}" HorizontalAlignment="Right" />
+                <TextBlock Text="{Binding QuantityText}" Style="{StaticResource MetaTextStyle}" HorizontalAlignment="Right" />
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <!-- ========== 私信气泡（W10M 消息应用：自己的用强调色，对方的用灰色，带直角小尾巴） ========== -->
+
+    <DataTemplate x:Key="OutgoingBubbleTemplate">
+        <StackPanel HorizontalAlignment="Right" MaxWidth="290" Margin="56,0,0,14" Opacity="{Binding BubbleOpacity}">
+            <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}" Padding="10,8,10,6">
+                <StackPanel>
+                    <TextBlock Text="{Binding Text}" FontSize="15" TextWrapping="Wrap" Foreground="White" IsTextSelectionEnabled="True" />
+                    <TextBlock Text="{Binding StatusText}" FontSize="11" Foreground="White" Opacity="0.7"
+                               HorizontalAlignment="Right" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+            <Polygon Points="0,0 12,0 12,10" HorizontalAlignment="Right"
+                     Fill="{ThemeResource SystemControlBackgroundAccentBrush}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IncomingBubbleTemplate">
+        <StackPanel HorizontalAlignment="Left" MaxWidth="290" Margin="0,0,56,14">
+            <Border Background="{ThemeResource BubbleInBrush}" Padding="10,8,10,6">
+                <StackPanel>
+                    <TextBlock Text="{Binding Text}" FontSize="15" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+                    <TextBlock Text="{Binding StatusText}" FontSize="11" Opacity="0.7"
+                               HorizontalAlignment="Right" Margin="0,4,0,0" />
+                </StackPanel>
+            </Border>
+            <Polygon Points="0,0 12,0 0,10" HorizontalAlignment="Left" Fill="{ThemeResource BubbleInBrush}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SystemMessageTemplate">
+        <TextBlock Text="{Binding Text}" Style="{StaticResource MetaTextStyle}" TextWrapping="Wrap"
+                   HorizontalAlignment="Center" TextAlignment="Center" Margin="0,4,0,14" />
+    </DataTemplate>
+
+    <!-- 图片消息 -->
+    <DataTemplate x:Key="OutgoingImageTemplate">
+        <StackPanel HorizontalAlignment="Right" MaxWidth="290" Margin="56,0,0,14" Opacity="{Binding BubbleOpacity}">
+            <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}" Padding="4">
+                <Image Source="{Binding MediaUrl, Converter={StaticResource ImageUrl}, ConverterParameter=480}"
+                       Stretch="Uniform" MaxWidth="220" MaxHeight="280" />
+            </Border>
+            <Polygon Points="0,0 12,0 12,10" HorizontalAlignment="Right"
+                     Fill="{ThemeResource SystemControlBackgroundAccentBrush}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IncomingImageTemplate">
+        <StackPanel HorizontalAlignment="Left" MaxWidth="290" Margin="0,0,56,14">
+            <Border Background="{ThemeResource BubbleInBrush}" Padding="4">
+                <Image Source="{Binding MediaUrl, Converter={StaticResource ImageUrl}, ConverterParameter=480}"
+                       Stretch="Uniform" MaxWidth="220" MaxHeight="280" />
+            </Border>
+            <Polygon Points="0,0 12,0 0,10" HorizontalAlignment="Left" Fill="{ThemeResource BubbleInBrush}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- 视频消息：封面 + 播放按钮，点击后全屏播放 -->
+    <DataTemplate x:Key="OutgoingVideoTemplate">
+        <StackPanel HorizontalAlignment="Right" MaxWidth="290" Margin="56,0,0,14" Opacity="{Binding BubbleOpacity}">
+            <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}" Padding="4">
+                <Grid Width="220" Height="150" Background="#FF1A1A1A">
+                    <Image Source="{Binding MediaCover, Converter={StaticResource ImageUrl}, ConverterParameter=480}"
+                           Stretch="UniformToFill" />
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE768;" FontSize="34"
+                              Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+            <Polygon Points="0,0 12,0 12,10" HorizontalAlignment="Right"
+                     Fill="{ThemeResource SystemControlBackgroundAccentBrush}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IncomingVideoTemplate">
+        <StackPanel HorizontalAlignment="Left" MaxWidth="290" Margin="0,0,56,14">
+            <Border Background="{ThemeResource BubbleInBrush}" Padding="4">
+                <Grid Width="220" Height="150" Background="#FF1A1A1A">
+                    <Image Source="{Binding MediaCover, Converter={StaticResource ImageUrl}, ConverterParameter=480}"
+                           Stretch="UniformToFill" />
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE768;" FontSize="34"
+                              Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+            <Polygon Points="0,0 12,0 0,10" HorizontalAlignment="Left" Fill="{ThemeResource BubbleInBrush}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- 卡片消息：宝贝/订单/链接/文件等。有图显示图，标题、描述、价格按有值显示 -->
+    <DataTemplate x:Key="OutgoingCardTemplate">
+        <StackPanel HorizontalAlignment="Right" MaxWidth="290" Margin="56,0,0,14" Opacity="{Binding BubbleOpacity}">
+            <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}" Padding="4">
+                <StackPanel Width="220">
+                    <Image Source="{Binding MediaUrl, Converter={StaticResource ImageUrl}, ConverterParameter=440}"
+                           Stretch="UniformToFill" MaxHeight="200"
+                           Visibility="{Binding MediaUrl, Converter={StaticResource VisibleWhen}}" />
+                    <StackPanel Margin="6,6,6,4">
+                        <TextBlock Text="{Binding CardTitle}" FontSize="15" TextWrapping="Wrap" MaxLines="2"
+                                   TextTrimming="CharacterEllipsis" Foreground="White"
+                                   Visibility="{Binding CardTitle, Converter={StaticResource VisibleWhen}}" />
+                        <TextBlock Text="{Binding CardDesc}" FontSize="12" Opacity="0.85" TextWrapping="Wrap" MaxLines="2"
+                                   Margin="0,3,0,0" Foreground="White"
+                                   Visibility="{Binding CardDesc, Converter={StaticResource VisibleWhen}}" />
+                        <TextBlock Text="{Binding CardPrice}" FontSize="15" FontWeight="SemiBold" Margin="0,4,0,0" Foreground="White"
+                                   Visibility="{Binding CardPrice, Converter={StaticResource VisibleWhen}}" />
+                        <TextBlock Text="{Binding StatusText}" FontSize="11" Opacity="0.7" Foreground="White"
+                                   HorizontalAlignment="Right" Margin="0,4,0,0" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Polygon Points="0,0 12,0 12,10" HorizontalAlignment="Right"
+                     Fill="{ThemeResource SystemControlBackgroundAccentBrush}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IncomingCardTemplate">
+        <StackPanel HorizontalAlignment="Left" MaxWidth="290" Margin="0,0,56,14">
+            <Border Background="{ThemeResource BubbleInBrush}" Padding="4">
+                <StackPanel Width="220">
+                    <Image Source="{Binding MediaUrl, Converter={StaticResource ImageUrl}, ConverterParameter=440}"
+                           Stretch="UniformToFill" MaxHeight="200"
+                           Visibility="{Binding MediaUrl, Converter={StaticResource VisibleWhen}}" />
+                    <StackPanel Margin="6,6,6,4">
+                        <TextBlock Text="{Binding CardTitle}" FontSize="15" TextWrapping="Wrap" MaxLines="2"
+                                   TextTrimming="CharacterEllipsis"
+                                   Visibility="{Binding CardTitle, Converter={StaticResource VisibleWhen}}" />
+                        <TextBlock Text="{Binding CardDesc}" Style="{StaticResource MetaTextStyle}" TextWrapping="Wrap" MaxLines="2"
+                                   Margin="0,3,0,0"
+                                   Visibility="{Binding CardDesc, Converter={StaticResource VisibleWhen}}" />
+                        <TextBlock Text="{Binding CardPrice}" Style="{StaticResource PriceTextStyle}" FontSize="15" Margin="0,4,0,0"
+                                   Visibility="{Binding CardPrice, Converter={StaticResource VisibleWhen}}" />
+                        <TextBlock Text="{Binding StatusText}" FontSize="11" Opacity="0.7"
+                                   HorizontalAlignment="Right" Margin="0,4,0,0" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Polygon Points="0,0 12,0 0,10" HorizontalAlignment="Left" Fill="{ThemeResource BubbleInBrush}" />
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

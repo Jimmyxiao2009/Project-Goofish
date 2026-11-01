@@ -1,0 +1,274 @@
+/* ==========================================================================
+   Windows 10 Mobile (MDL2) Core Styling & Theme System
+   Project Goofish - Third-party Xianyu UWP Client
+   ========================================================================== */
+
+:root {
+  /* Windows 10 Mobile Accent Color (Default: Xianyu Golden Yellow / Windows 10 Phone Gold) */
+  --accent-color: #FFB900;
+  --accent-color-hover: #E5A700;
+  --accent-color-pressed: #CC9400;
+  --accent-contrast: #000000;
+
+  /* Windows 10 Dark Theme Defaults (Pure AMOLED Black) */
+  --bg-color: #000000;
+  --surface-color: #1F1F1F;
+  --surface-alt: #2B2B2B;
+  --surface-border: #333333;
+  --text-primary: #FFFFFF;
+  --text-secondary: #999999;
+  --text-tertiary: #666666;
+  --command-bar-bg: #1F1F1F;
+  --command-bar-border: #2A2A2A;
+  --status-bar-bg: #000000;
+  --input-bg: #1A1A1A;
+  --input-border: #666666;
+  --input-border-focus: #FFFFFF;
+  --list-item-hover: rgba(255, 255, 255, 0.1);
+  --list-item-pressed: rgba(255, 255, 255, 0.2);
+
+  /* Typography */
+  --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Touch Targets & Metrics */
+  --touch-target-min: 48px;
+  --command-bar-height: 48px;
+  --status-bar-height: 24px;
+  --header-height: 48px;
+  --pivot-header-height: 44px;
+}
+
+/* Light Theme Support */
+body.light-theme {
+  --bg-color: #F2F2F2;
+  --surface-color: #FFFFFF;
+  --surface-alt: #EAEAEA;
+  --surface-border: #DCDCDC;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --command-bar-bg: #F2F2F2;
+  --command-bar-border: #D8D8D8;
+  --status-bar-bg: #F2F2F2;
+  --input-bg: #FFFFFF;
+  --input-border: #999999;
+  --input-border-focus: #000000;
+  --list-item-hover: rgba(0, 0, 0, 0.05);
+  --list-item-pressed: rgba(0, 0, 0, 0.1);
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  font-family: var(--font-family);
+  background: #111111;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+/* Phone Mockup Frame (Lumia 950 XL aesthetic) */
+.device-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.device-controls-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.device-btn {
+  background: #2D2D2D;
+  color: #DDD;
+  border: 1px solid #444;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all 0.2s;
+}
+
+.device-btn:hover {
+  background: #3D3D3D;
+  color: #FFF;
+  border-color: #666;
+}
+
+.device-btn.active {
+  background: var(--accent-color);
+  color: var(--accent-contrast);
+  font-weight: 600;
+}
+
+.lumia-frame {
+  width: 390px;
+  height: 800px;
+  background: #000;
+  border-radius: 28px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 10px #1E1E1E, 0 0 0 12px #333333;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Fullscreen Mobile Viewport Mode */
+body.fullscreen-mode {
+  padding: 0;
+  background: var(--bg-color);
+}
+
+body.fullscreen-mode .device-controls-bar {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+body.fullscreen-mode .device-controls-bar:hover {
+  opacity: 1;
+}
+
+body.fullscreen-mode .lumia-frame {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Windows 10 Mobile Top Status Bar */
+.w10m-status-bar {
+  height: var(--status-bar-height);
+  background: var(--status-bar-bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: var(--font-normal);
+  z-index: 100;
+  letter-spacing: 0.5px;
+}
+
+.w10m-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.w10m-status-icon {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* App Viewport Container */
+.w10m-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg-color);
+  overflow: hidden;
+}
+
+/* Page Stack & Transitions */
+.w10m-page-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.w10m-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-color);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: none;
+  flex-direction: column;
+}
+
+.w10m-page.active {
+  display: flex;
+}
+
+/* Windows Continuum / Turnstile Page Animation */
+.page-enter-forward {
+  animation: w10mTurnstileForward 0.25s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.page-enter-backward {
+  animation: w10mTurnstileBackward 0.25s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes w10mTurnstileForward {
+  0% {
+    opacity: 0;
+    transform: translateX(40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes w10mTurnstileBackward {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Scrollbar Style for Windows Phone */
+.w10m-page::-webkit-scrollbar {
+  width: 4px;
+}
+.w10m-page::-webkit-scrollbar-track {
+  background: transparent;
+}
+.w10m-page::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+body.light-theme .w10m-page::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Segoe MDL2 Icon Utility Class */
+.mdl2 {
+  font-family: "Segoe MDL2 Assets", "Segoe UI Symbol", "Apple Color Emoji", sans-serif;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-rendering: geometricPrecision;
+}
